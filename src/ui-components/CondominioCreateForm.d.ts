@@ -22,21 +22,24 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
 export declare type CondominioCreateFormInputValues = {
-    name?: string;
+    nome?: string;
     endereco?: string;
-    cell?: string;
+    celular?: string;
+    foto?: string;
 };
 export declare type CondominioCreateFormValidationValues = {
-    name?: ValidationFunction<string>;
+    nome?: ValidationFunction<string>;
     endereco?: ValidationFunction<string>;
-    cell?: ValidationFunction<string>;
+    celular?: ValidationFunction<string>;
+    foto?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type CondominioCreateFormOverridesProps = {
     CondominioCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    name?: PrimitiveOverrideProps<TextFieldProps>;
+    nome?: PrimitiveOverrideProps<TextFieldProps>;
     endereco?: PrimitiveOverrideProps<TextFieldProps>;
-    cell?: PrimitiveOverrideProps<TextFieldProps>;
+    celular?: PrimitiveOverrideProps<TextFieldProps>;
+    foto?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type CondominioCreateFormProps = React.PropsWithChildren<{
     overrides?: CondominioCreateFormOverridesProps | undefined | null;

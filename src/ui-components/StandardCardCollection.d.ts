@@ -5,7 +5,8 @@
  **************************************************************************/
 
 import * as React from "react";
-import { FlexProps, ImageProps, TextProps } from "@aws-amplify/ui-react";
+import { StandardCardProps } from "./StandardCard";
+import { CollectionProps } from "@aws-amplify/ui-react";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -17,18 +18,17 @@ export declare type Variant = {
     overrides: EscapeHatchProps;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type StandardCardOverridesProps = {
-    StandardCard?: PrimitiveOverrideProps<FlexProps>;
-    image?: PrimitiveOverrideProps<ImageProps>;
-    "Card Area"?: PrimitiveOverrideProps<FlexProps>;
-    "Text Group"?: PrimitiveOverrideProps<FlexProps>;
-    "$99 USD"?: PrimitiveOverrideProps<TextProps>;
-    "4bds 3 ba 2,530 sqft - Active"?: PrimitiveOverrideProps<TextProps>;
-    "832 34th Ave, Seattle, WA 98122"?: PrimitiveOverrideProps<TextProps>;
+export declare type StandardCardCollectionOverridesProps = {
+    StandardCardCollection?: PrimitiveOverrideProps<CollectionProps>;
+    StandardCard?: StandardCardProps;
 } & EscapeHatchProps;
-export declare type StandardCardProps = React.PropsWithChildren<Partial<FlexProps> & {
-    condominio?: any;
+export declare type StandardCardCollectionProps = React.PropsWithChildren<Partial<CollectionProps<any>> & {
+    items?: any[];
+    overrideItems?: (collectionItem: {
+        item: any;
+        index: number;
+    }) => StandardCardProps;
 } & {
-    overrides?: StandardCardOverridesProps | undefined | null;
+    overrides?: StandardCardCollectionOverridesProps | undefined | null;
 }>;
-export default function StandardCard(props: StandardCardProps): React.ReactElement;
+export default function StandardCardCollection(props: StandardCardCollectionProps): React.ReactElement;

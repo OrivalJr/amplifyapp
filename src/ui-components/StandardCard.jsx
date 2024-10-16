@@ -6,10 +6,23 @@
 
 /* eslint-disable */
 import * as React from "react";
+import { generateClient } from "aws-amplify/api";
+import { updateCondominio } from "../../mutations";
 import { getOverrideProps } from "./utils";
 import { Flex, Image, Text } from "@aws-amplify/ui-react";
+const client = generateClient();
 export default function StandardCard(props) {
-  const { overrides, ...rest } = props;
+  const { condominio, overrides, ...rest } = props;
+  const imageOnClick = async () => {
+    await client.graphql({
+      query: updateCondominio.replaceAll("__typename", ""),
+      variables: {
+        input: {
+          id: condominio?.id,
+        },
+      },
+    });
+  };
   return (
     <Flex
       gap="0"
@@ -36,6 +49,10 @@ export default function StandardCard(props) {
         position="relative"
         padding="0px 0px 0px 0px"
         objectFit="cover"
+        src={condominio?.foto}
+        onClick={() => {
+          imageOnClick();
+        }}
         {...getOverrideProps(overrides, "image")}
       ></Image>
       <Flex
@@ -83,7 +100,7 @@ export default function StandardCard(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="$99 USD"
+            children={condominio?.nome}
             {...getOverrideProps(overrides, "$99 USD")}
           ></Text>
           <Text
@@ -106,7 +123,7 @@ export default function StandardCard(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="4bds 3 ba 2,530 sqft - Active"
+            children={condominio?.endereco}
             {...getOverrideProps(overrides, "4bds 3 ba 2,530 sqft - Active")}
           ></Text>
           <Text
@@ -128,7 +145,7 @@ export default function StandardCard(props) {
             position="relative"
             padding="0px 0px 0px 0px"
             whiteSpace="pre-wrap"
-            children="832 34th Ave, Seattle, WA 98122"
+            children={condominio?.celular}
             {...getOverrideProps(overrides, "832 34th Ave, Seattle, WA 98122")}
           ></Text>
         </Flex>

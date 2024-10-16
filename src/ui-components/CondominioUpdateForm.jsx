@@ -25,21 +25,24 @@ export default function CondominioUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    name: "",
+    nome: "",
     endereco: "",
-    cell: "",
+    celular: "",
+    foto: "",
   };
-  const [name, setName] = React.useState(initialValues.name);
+  const [nome, setNome] = React.useState(initialValues.nome);
   const [endereco, setEndereco] = React.useState(initialValues.endereco);
-  const [cell, setCell] = React.useState(initialValues.cell);
+  const [celular, setCelular] = React.useState(initialValues.celular);
+  const [foto, setFoto] = React.useState(initialValues.foto);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = condominioRecord
       ? { ...initialValues, ...condominioRecord }
       : initialValues;
-    setName(cleanValues.name);
+    setNome(cleanValues.nome);
     setEndereco(cleanValues.endereco);
-    setCell(cleanValues.cell);
+    setCelular(cleanValues.celular);
+    setFoto(cleanValues.foto);
     setErrors({});
   };
   const [condominioRecord, setCondominioRecord] =
@@ -60,9 +63,10 @@ export default function CondominioUpdateForm(props) {
   }, [idProp, condominioModelProp]);
   React.useEffect(resetStateValues, [condominioRecord]);
   const validations = {
-    name: [{ type: "Required" }],
+    nome: [{ type: "Required" }],
     endereco: [{ type: "Required" }],
-    cell: [{ type: "Required" }],
+    celular: [{ type: "Required" }],
+    foto: [{ type: "URL" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -90,9 +94,10 @@ export default function CondominioUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          name,
+          nome,
           endereco,
-          cell,
+          celular,
+          foto: foto ?? null,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -145,30 +150,31 @@ export default function CondominioUpdateForm(props) {
       {...rest}
     >
       <TextField
-        label="Name"
+        label="Nome"
         isRequired={true}
         isReadOnly={false}
-        value={name}
+        value={nome}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name: value,
+              nome: value,
               endereco,
-              cell,
+              celular,
+              foto,
             };
             const result = onChange(modelFields);
-            value = result?.name ?? value;
+            value = result?.nome ?? value;
           }
-          if (errors.name?.hasError) {
-            runValidationTasks("name", value);
+          if (errors.nome?.hasError) {
+            runValidationTasks("nome", value);
           }
-          setName(value);
+          setNome(value);
         }}
-        onBlur={() => runValidationTasks("name", name)}
-        errorMessage={errors.name?.errorMessage}
-        hasError={errors.name?.hasError}
-        {...getOverrideProps(overrides, "name")}
+        onBlur={() => runValidationTasks("nome", nome)}
+        errorMessage={errors.nome?.errorMessage}
+        hasError={errors.nome?.hasError}
+        {...getOverrideProps(overrides, "nome")}
       ></TextField>
       <TextField
         label="Endereco"
@@ -179,9 +185,10 @@ export default function CondominioUpdateForm(props) {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
+              nome,
               endereco: value,
-              cell,
+              celular,
+              foto,
             };
             const result = onChange(modelFields);
             value = result?.endereco ?? value;
@@ -197,30 +204,58 @@ export default function CondominioUpdateForm(props) {
         {...getOverrideProps(overrides, "endereco")}
       ></TextField>
       <TextField
-        label="Cell"
+        label="Celular"
         isRequired={true}
         isReadOnly={false}
-        value={cell}
+        value={celular}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              name,
+              nome,
               endereco,
-              cell: value,
+              celular: value,
+              foto,
             };
             const result = onChange(modelFields);
-            value = result?.cell ?? value;
+            value = result?.celular ?? value;
           }
-          if (errors.cell?.hasError) {
-            runValidationTasks("cell", value);
+          if (errors.celular?.hasError) {
+            runValidationTasks("celular", value);
           }
-          setCell(value);
+          setCelular(value);
         }}
-        onBlur={() => runValidationTasks("cell", cell)}
-        errorMessage={errors.cell?.errorMessage}
-        hasError={errors.cell?.hasError}
-        {...getOverrideProps(overrides, "cell")}
+        onBlur={() => runValidationTasks("celular", celular)}
+        errorMessage={errors.celular?.errorMessage}
+        hasError={errors.celular?.hasError}
+        {...getOverrideProps(overrides, "celular")}
+      ></TextField>
+      <TextField
+        label="Foto"
+        isRequired={false}
+        isReadOnly={false}
+        value={foto}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              nome,
+              endereco,
+              celular,
+              foto: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.foto ?? value;
+          }
+          if (errors.foto?.hasError) {
+            runValidationTasks("foto", value);
+          }
+          setFoto(value);
+        }}
+        onBlur={() => runValidationTasks("foto", foto)}
+        errorMessage={errors.foto?.errorMessage}
+        hasError={errors.foto?.hasError}
+        {...getOverrideProps(overrides, "foto")}
       ></TextField>
       <Flex
         justifyContent="space-between"
