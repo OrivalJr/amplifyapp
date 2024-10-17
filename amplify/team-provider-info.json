@@ -36,6 +36,9 @@
       "auth": {
         "amplifyapp261104f3": {},
         "amplifyapp": {}
+      },
+      "api": {
+        "amplifyapp": {}
       }
     }
   }

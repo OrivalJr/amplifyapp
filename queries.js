@@ -1,31 +1,37 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getBlog = /* GraphQL */ `
-  query GetBlog($id: ID!) {
-    getBlog(id: $id) {
+export const getDadosEstruturais = /* GraphQL */ `
+  query GetDadosEstruturais($id: ID!) {
+    getDadosEstruturais(id: $id) {
       id
-      name
-      posts {
-        nextToken
-        __typename
-      }
+      dataconstrucao
+      idadepredial
+      qtdunidades
+      condominioID
       createdAt
       updatedAt
       __typename
     }
   }
 `;
-export const listBlogs = /* GraphQL */ `
-  query ListBlogs(
-    $filter: ModelBlogFilterInput
+export const listDadosEstruturais = /* GraphQL */ `
+  query ListDadosEstruturais(
+    $filter: ModelDadosEstruturaisFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listDadosEstruturais(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
-        name
+        dataconstrucao
+        idadepredial
+        qtdunidades
+        condominioID
         createdAt
         updatedAt
         __typename
@@ -35,42 +41,29 @@ export const listBlogs = /* GraphQL */ `
     }
   }
 `;
-export const getPost = /* GraphQL */ `
-  query GetPost($id: ID!) {
-    getPost(id: $id) {
-      id
-      title
-      blog {
-        id
-        name
-        createdAt
-        updatedAt
-        __typename
-      }
-      comments {
-        nextToken
-        __typename
-      }
-      createdAt
-      updatedAt
-      blogPostsId
-      __typename
-    }
-  }
-`;
-export const listPosts = /* GraphQL */ `
-  query ListPosts(
-    $filter: ModelPostFilterInput
+export const dadosEstruturaisByCondominioID = /* GraphQL */ `
+  query DadosEstruturaisByCondominioID(
+    $condominioID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelDadosEstruturaisFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    dadosEstruturaisByCondominioID(
+      condominioID: $condominioID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
-        title
+        dataconstrucao
+        idadepredial
+        qtdunidades
+        condominioID
         createdAt
         updatedAt
-        blogPostsId
         __typename
       }
       nextToken
@@ -78,39 +71,39 @@ export const listPosts = /* GraphQL */ `
     }
   }
 `;
-export const getComment = /* GraphQL */ `
-  query GetComment($id: ID!) {
-    getComment(id: $id) {
+export const getCondominio = /* GraphQL */ `
+  query GetCondominio($id: ID!) {
+    getCondominio(id: $id) {
       id
-      post {
-        id
-        title
-        createdAt
-        updatedAt
-        blogPostsId
+      nome
+      endereco
+      celular
+      rsDadosEstruturais {
+        nextToken
         __typename
       }
-      content
+      foto
       createdAt
       updatedAt
-      postCommentsId
       __typename
     }
   }
 `;
-export const listComments = /* GraphQL */ `
-  query ListComments(
-    $filter: ModelCommentFilterInput
+export const listCondominios = /* GraphQL */ `
+  query ListCondominios(
+    $filter: ModelCondominioFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listCondominios(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        content
+        nome
+        endereco
+        celular
+        foto
         createdAt
         updatedAt
-        postCommentsId
         __typename
       }
       nextToken
