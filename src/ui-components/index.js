@@ -9,7 +9,7 @@ export { default as Ampligram } from "./Ampligram";
 export { default as CTASection } from "./CTASection";
 export { default as CheckoutPayment } from "./CheckoutPayment";
 export { default as CommentCard } from "./CommentCard";
-export { default as CondominioCreateForm } from "./CondominioCreateForm";
+export { default as Condominio } from "./Condominio";
 export { default as CondominioUpdateForm } from "./CondominioUpdateForm";
 export { default as ContactUs } from "./ContactUs";
 export { default as DataRow } from "./DataRow";
