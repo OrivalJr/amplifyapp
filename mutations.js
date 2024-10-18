@@ -14,6 +14,9 @@ export const createDadosEstruturais = /* GraphQL */ `
       condominioID
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -31,6 +34,9 @@ export const updateDadosEstruturais = /* GraphQL */ `
       condominioID
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -48,6 +54,9 @@ export const deleteDadosEstruturais = /* GraphQL */ `
       condominioID
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -64,11 +73,15 @@ export const createCondominio = /* GraphQL */ `
       celular
       rsDadosEstruturais {
         nextToken
+        startedAt
         __typename
       }
       foto
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -85,11 +98,15 @@ export const updateCondominio = /* GraphQL */ `
       celular
       rsDadosEstruturais {
         nextToken
+        startedAt
         __typename
       }
       foto
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -106,11 +123,15 @@ export const deleteCondominio = /* GraphQL */ `
       celular
       rsDadosEstruturais {
         nextToken
+        startedAt
         __typename
       }
       foto
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }

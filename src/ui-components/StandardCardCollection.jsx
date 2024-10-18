@@ -6,119 +6,57 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { listCondominios } from "../../queries";
+import { Condominio } from "../models";
+import { getOverrideProps, useDataStoreBinding } from "./utils";
 import StandardCard from "./StandardCard";
-import { getOverrideProps } from "./utils";
-import { Collection, Pagination, Placeholder } from "@aws-amplify/ui-react";
-import { generateClient } from "aws-amplify/api";
-const nextToken = {};
-const apiCache = {};
-const client = generateClient();
+import { Collection } from "@aws-amplify/ui-react";
 export default function StandardCardCollection(props) {
   const { items: itemsProp, overrideItems, overrides, ...rest } = props;
-  const [pageIndex, setPageIndex] = React.useState(1);
-  const [hasMorePages, setHasMorePages] = React.useState(true);
-  const [items, setItems] = React.useState([]);
-  const [isApiPagination, setIsApiPagination] = React.useState(false);
-  const [instanceKey, setInstanceKey] = React.useState("newGuid");
-  const [loading, setLoading] = React.useState(true);
-  const [maxViewed, setMaxViewed] = React.useState(1);
-  const pageSize = 6;
-  const isPaginated = true;
+  const [items, setItems] = React.useState(undefined);
+  const itemsDataStore = useDataStoreBinding({
+    type: "collection",
+    model: Condominio,
+  }).items;
   React.useEffect(() => {
-    nextToken[instanceKey] = "";
-    apiCache[instanceKey] = [];
-  }, [instanceKey]);
-  React.useEffect(() => {
-    setIsApiPagination(!!!itemsProp);
-  }, [itemsProp]);
-  const handlePreviousPage = () => {
-    setPageIndex(pageIndex - 1);
-  };
-  const handleNextPage = () => {
-    setPageIndex(pageIndex + 1);
-  };
-  const jumpToPage = (pageNum) => {
-    setPageIndex(pageNum);
-  };
-  const loadPage = async (page) => {
-    const cacheUntil = page * pageSize + 1;
-    const newCache = apiCache[instanceKey].slice();
-    let newNext = nextToken[instanceKey];
-    while ((newCache.length < cacheUntil || !isPaginated) && newNext != null) {
-      setLoading(true);
-      const variables = {
-        limit: pageSize,
-      };
-      if (newNext) {
-        variables["nextToken"] = newNext;
-      }
-      const result = (
-        await client.graphql({
-          query: listCondominios.replaceAll("__typename", ""),
-          variables,
-        })
-      ).data.listCondominios;
-      newCache.push(...result.items);
-      newNext = result.nextToken;
+    if (itemsProp !== undefined) {
+      setItems(itemsProp);
+      return;
     }
-    const cacheSlice = isPaginated
-      ? newCache.slice((page - 1) * pageSize, page * pageSize)
-      : newCache;
-    setItems(cacheSlice);
-    setHasMorePages(!!newNext);
-    setLoading(false);
-    apiCache[instanceKey] = newCache;
-    nextToken[instanceKey] = newNext;
-  };
-  React.useEffect(() => {
-    loadPage(pageIndex);
-  }, [pageIndex]);
-  React.useEffect(() => {
-    setMaxViewed(Math.max(maxViewed, pageIndex));
-  }, [pageIndex, maxViewed, setMaxViewed]);
+    async function setItemsFromDataStore() {
+      var loaded = await Promise.all(
+        itemsDataStore.map(async (item) => ({
+          ...item,
+          rsDadosEstruturais: await item.rsDadosEstruturais.toArray(),
+        }))
+      );
+      setItems(loaded);
+    }
+    setItemsFromDataStore();
+  }, [itemsProp, itemsDataStore]);
   return (
-    <div>
-      <Collection
-        type="grid"
-        isSearchable={true}
-        searchPlaceholder="Search..."
-        templateColumns="1fr 1fr"
-        autoFlow="row"
-        alignItems="stretch"
-        justifyContent="stretch"
-        itemsPerPage={pageSize}
-        isPaginated={!isApiPagination && isPaginated}
-        items={itemsProp || (loading ? new Array(pageSize).fill({}) : items)}
-        {...getOverrideProps(overrides, "StandardCardCollection")}
-        {...rest}
-      >
-        {(item, index) => {
-          if (loading) {
-            return <Placeholder key={index} size="large" />;
-          }
-          return (
-            <StandardCard
-              condominio={item}
-              height="auto"
-              width="auto"
-              margin="10px 0 0 10px"
-              key={item.id}
-              {...(overrideItems && overrideItems({ item, index }))}
-            ></StandardCard>
-          );
-        }}
-      </Collection>
-      {isApiPagination && isPaginated && (
-        <Pagination
-          currentPage={pageIndex}
-          totalPages={maxViewed}
-          hasMorePages={hasMorePages}
-          onNext={handleNextPage}
-          onPrevious={handlePreviousPage}
-          onChange={jumpToPage}
-        />
+    <Collection
+      type="grid"
+      isSearchable={true}
+      isPaginated={true}
+      searchPlaceholder="Search..."
+      templateColumns="1fr 1fr"
+      autoFlow="row"
+      alignItems="stretch"
+      justifyContent="stretch"
+      items={items || []}
+      {...getOverrideProps(overrides, "StandardCardCollection")}
+      {...rest}
+    >
+      {(item, index) => (
+        <StandardCard
+          condominio={item}
+          height="auto"
+          width="auto"
+          margin="10px 0 0 10px"
+          key={item.id}
+          {...(overrideItems && overrideItems({ item, index }))}
+        ></StandardCard>
       )}
-    </div>
+    </Collection>
   );
 }

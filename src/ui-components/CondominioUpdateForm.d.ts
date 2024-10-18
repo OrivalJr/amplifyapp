@@ -6,6 +6,7 @@
 
 import * as React from "react";
 import { GridProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { Condominio } from "../models";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -45,7 +46,7 @@ export declare type CondominioUpdateFormProps = React.PropsWithChildren<{
     overrides?: CondominioUpdateFormOverridesProps | undefined | null;
 } & {
     id?: string;
-    condominio?: any;
+    condominio?: Condominio;
     onSubmit?: (fields: CondominioUpdateFormInputValues) => CondominioUpdateFormInputValues;
     onSuccess?: (fields: CondominioUpdateFormInputValues) => void;
     onError?: (fields: CondominioUpdateFormInputValues, errorMessage: string) => void;

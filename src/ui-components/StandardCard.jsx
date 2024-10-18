@@ -6,23 +6,18 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { generateClient } from "aws-amplify/api";
-import { updateCondominio } from "../../mutations";
-import { getOverrideProps } from "./utils";
+import { Condominio } from "../models";
+import { getOverrideProps, useDataStoreUpdateAction } from "./utils";
+import { schema } from "../models/schema";
 import { Flex, Image, Text } from "@aws-amplify/ui-react";
-const client = generateClient();
 export default function StandardCard(props) {
   const { condominio, overrides, ...rest } = props;
-  const imageOnClick = async () => {
-    await client.graphql({
-      query: updateCondominio.replaceAll("__typename", ""),
-      variables: {
-        input: {
-          id: condominio?.id,
-        },
-      },
-    });
-  };
+  const imageOnClick = useDataStoreUpdateAction({
+    fields: {},
+    id: condominio?.id,
+    model: Condominio,
+    schema: schema,
+  });
   return (
     <Flex
       gap="0"

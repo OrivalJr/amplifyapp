@@ -11,6 +11,9 @@ export const getDadosEstruturais = /* GraphQL */ `
       condominioID
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -34,9 +37,45 @@ export const listDadosEstruturais = /* GraphQL */ `
         condominioID
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncDadosEstruturais = /* GraphQL */ `
+  query SyncDadosEstruturais(
+    $filter: ModelDadosEstruturaisFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncDadosEstruturais(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        dataconstrucao
+        idadepredial
+        qtdunidades
+        condominioID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
       __typename
     }
   }
@@ -64,9 +103,13 @@ export const dadosEstruturaisByCondominioID = /* GraphQL */ `
         condominioID
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       nextToken
+      startedAt
       __typename
     }
   }
@@ -80,11 +123,15 @@ export const getCondominio = /* GraphQL */ `
       celular
       rsDadosEstruturais {
         nextToken
+        startedAt
         __typename
       }
       foto
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       __typename
     }
   }
@@ -104,9 +151,45 @@ export const listCondominios = /* GraphQL */ `
         foto
         createdAt
         updatedAt
+        _version
+        _deleted
+        _lastChangedAt
         __typename
       }
       nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncCondominios = /* GraphQL */ `
+  query SyncCondominios(
+    $filter: ModelCondominioFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncCondominios(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        nome
+        endereco
+        celular
+        foto
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
       __typename
     }
   }

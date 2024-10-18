@@ -7,11 +7,9 @@
 /* eslint-disable */
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import { Condominio } from "../models";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
-import { generateClient } from "aws-amplify/api";
-import { getCondominio } from "../../queries";
-import { updateCondominio } from "../../mutations";
-const client = generateClient();
+import { DataStore } from "aws-amplify/datastore";
 export default function CondominioUpdateForm(props) {
   const {
     id: idProp,
@@ -50,12 +48,7 @@ export default function CondominioUpdateForm(props) {
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
-        ? (
-            await client.graphql({
-              query: getCondominio.replaceAll("__typename", ""),
-              variables: { id: idProp },
-            })
-          )?.data?.getCondominio
+        ? await DataStore.query(Condominio, idProp)
         : condominioModelProp;
       setCondominioRecord(record);
     };
@@ -97,7 +90,7 @@ export default function CondominioUpdateForm(props) {
           nome,
           endereco,
           celular,
-          foto: foto ?? null,
+          foto,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -127,22 +120,17 @@ export default function CondominioUpdateForm(props) {
               modelFields[key] = null;
             }
           });
-          await client.graphql({
-            query: updateCondominio.replaceAll("__typename", ""),
-            variables: {
-              input: {
-                id: condominioRecord.id,
-                ...modelFields,
-              },
-            },
-          });
+          await DataStore.save(
+            Condominio.copyOf(condominioRecord, (updated) => {
+              Object.assign(updated, modelFields);
+            })
+          );
           if (onSuccess) {
             onSuccess(modelFields);
           }
         } catch (err) {
           if (onError) {
-            const messages = err.errors.map((e) => e.message).join("\n");
-            onError(modelFields, messages);
+            onError(modelFields, err.message);
           }
         }
       }}
